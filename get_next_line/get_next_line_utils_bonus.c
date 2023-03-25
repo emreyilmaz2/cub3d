@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_utils.c                              :+:      :+:    :+:   */
+/*   get_next_line_utils_bonus.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: emyilmaz <emyilmaz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/21 15:29:43 by emyilmaz          #+#    #+#             */
-/*   Updated: 2022/04/25 16:27:33 by emyilmaz         ###   ########.fr       */
+/*   Created: 2022/04/21 15:29:56 by emyilmaz          #+#    #+#             */
+/*   Updated: 2022/04/21 16:53:17 by emyilmaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 size_t	ft_strlen(char *s)
 {
@@ -19,7 +19,7 @@ size_t	ft_strlen(char *s)
 	i = 0;
 	if (!s)
 		return (0);
-	while (s[i] != '\0')
+	while (s[i])
 		i++;
 	return (i);
 }
@@ -33,11 +33,11 @@ char	*ft_strchr(char *s, int c)
 		return (0);
 	if (c == '\0')
 		return ((char *)&s[ft_strlen(s)]);
-	while (s[i] != '\0')
+	while (s[i])
 	{
 		if (s[i] == (char) c)
 			return ((char *)&s[i]);
-		i++;
+	i++;
 	}
 	return (0);
 }
@@ -109,7 +109,7 @@ char	*ft_new_left_str(char *left_str)
 		i++;
 	if (!left_str[i])
 	{
-		free(left_str);
+		free (left_str);
 		return (NULL);
 	}
 	str = (char *)malloc(sizeof(char) * (ft_strlen(left_str) - i + 1));
@@ -120,6 +120,6 @@ char	*ft_new_left_str(char *left_str)
 	while (left_str[i])
 		str[j++] = left_str[i++];
 	str[j] = '\0';
-	free(left_str);
+	free (left_str);
 	return (str);
 }

@@ -23,7 +23,7 @@ void	start_game(char *str, t_game *mlx)
 	int i;
 
 	i = 0;
-	mlx->map = mapcontrol(str, -1, 0, mlx);
+	mlx->map = mapcontrol(str, mlx);
 	mlx->mlx = mlx_init();
 	mlx->window = mlx_new_window(mlx->mlx, 800, 800, "cub3d");
 	mlx->game_img = mlx_new_image(mlx, 800, 800);
@@ -58,9 +58,7 @@ int main(int ac, char **av)
 		printf("yanlış argüman");
 		exit(1);
 	}
-
 	mlx_key_hook(game.window, key_hook, &game);
-
 	mlx_loop(game.mlx);
 	return 0;
 }

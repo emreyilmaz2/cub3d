@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: emyilmaz <emyilmaz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/21 15:28:44 by emyilmaz          #+#    #+#             */
-/*   Updated: 2022/08/24 17:39:46 by emyilmaz         ###   ########.fr       */
+/*   Created: 2022/04/21 15:30:07 by emyilmaz          #+#    #+#             */
+/*   Updated: 2022/04/25 16:47:40 by emyilmaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 char	*ft_read_to_left_str(int fd, char *left_str)
 {
@@ -26,40 +26,42 @@ char	*ft_read_to_left_str(int fd, char *left_str)
 		rd_bytes = read(fd, buff, BUFFER_SIZE);
 		if (rd_bytes == -1)
 		{
-			free(buff);
+			free (buff);
 			return (NULL);
 		}
 		buff[rd_bytes] = '\0';
 		left_str = ft_strjoin(left_str, buff);
 	}
-	free(buff);
+	free (buff);
 	return (left_str);
 }
 
 char	*get_next_line(int fd)
 {
 	char		*line;
-	static char	*left_str;
+	static char	*left_str[1234];
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (0);
-	left_str = ft_read_to_left_str(fd, left_str);
-	if (!left_str)
+	left_str[fd] = ft_read_to_left_str(fd, left_str[fd]);
+	if (!left_str[fd])
 		return (NULL);
-	line = ft_get_line(left_str);
-	left_str = ft_new_left_str(left_str);
+	line = ft_get_line(left_str[fd]);
+	left_str[fd] = ft_new_left_str(left_str[fd]);
 	return (line);
 }
+
 // #include<stdio.h>
 // int main()
 // {
 // 	int fd1, fd2;
-// 	fd = open("dosya.m",O_RDONLY);
+// /* 	fd = open("dosya.m",O_RDONLY);
 // 	printf("%s", get_next_line(fd));
-// 	printf("%s",get_next_line(fd));
+// 	printf("%s",get_next_line(fd)); */
 // 	fd1 = open("d1", O_RDONLY);
 // 	fd2 = open("d2", O_RDONLY);
 // 	printf("%s\n", get_next_line(fd1));
 // 	printf("%s\n", get_next_line(fd2));
 // 	printf("%s\n", get_next_line(fd1));
+// 	printf("%s\n", get_next_line(fd2));
 // }

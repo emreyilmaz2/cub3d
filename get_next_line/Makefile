@@ -1,7 +1,7 @@
 NAME = get_next_line.a
 
 all: $(NAME)
-	@echo "Get_Next_Line DONE\n\n"
+	@echo "\nGet_Next_Line DONE"
 
 $(NAME): get_next_line.c get_next_line_utils.c
 	gcc -c get_next_line.c -o a.o

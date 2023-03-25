@@ -9,7 +9,6 @@
 # include <math.h>
 # include <stdlib.h>
 # include "../get_next_line/get_next_line.h"
-# include "../Libft/libft.h"
 
 #define  BOX_SIZE 30
 
@@ -17,7 +16,6 @@ typedef struct s_game
 {
 	void	*mlx;
 	void	*window;
-	char	**map;
 	int		map_length;
 	int		map_height;
 	void	*wall;
@@ -31,11 +29,19 @@ typedef struct s_game
 	int		endian;
 	int		*game_addr;
 	int		*map_addr;
+	int		flag;
+
+	char	**directions;
+	char	**floor_ceil;
+	char	**map;
 }	t_game;
 
 char	*get_next_line(int fd);
-char 	**mapcontrol(char *av, int i, int t, t_game *mlx);
-int		main(int ac, char **av);
+char **mapcontrol(char *av, t_game *mlx);
+int main(int ac, char **av);
+int		ft_strlen(char *str);
 void	start_game(char *str, t_game *mlx);
+int	check_directions(char **str);
+int	ft_strcmp(const char *s1, const char *s2);
 
 #endif

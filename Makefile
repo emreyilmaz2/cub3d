@@ -1,6 +1,6 @@
 NAME = cub3d
 LFLAGS = -framework OpenGL -framework AppKit
-SRCS = main/*.c	libft/*.c
+SRCS = main/*.c utils/*.c
 GNL = get_next_line/get_next_line.a
 CC = gcc -g
 

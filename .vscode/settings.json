@@ -2,6 +2,7 @@
 	"files.associations": {
 		"cub3d.h": "c",
 		"cstring": "c",
-		"locale": "c"
+		"locale": "c",
+		"__locale": "c"
 	}
 }

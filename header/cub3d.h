@@ -9,6 +9,7 @@
 # include <math.h>
 # include <stdlib.h>
 # include "../get_next_line/get_next_line.h"
+# include "../libft/source/libft.h"
 
 #define  BOX_SIZE 30
 
@@ -39,9 +40,9 @@ typedef struct s_game
 char	*get_next_line(int fd);
 char **mapcontrol(char *av, t_game *mlx);
 int main(int ac, char **av);
-int		ft_strlen(char *str);
 void	start_game(char *str, t_game *mlx);
-int	check_directions(char **str);
+void	check_cub_file(t_game	*mlx);
 int	ft_strcmp(const char *s1, const char *s2);
+void	two_dim_free(char **str);
 
 #endif

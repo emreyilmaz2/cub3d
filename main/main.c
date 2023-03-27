@@ -27,7 +27,7 @@ void	start_game(char *str, t_game *mlx)
 	mlx->mlx = mlx_init();
 	mlx->window = mlx_new_window(mlx->mlx, 800, 800, "cub3d");
 	mlx->game_img = mlx_new_image(mlx, 800, 800);
-	mlx->map_img = mlx_new_image(mlx, 9 * BOX_SIZE, 7 * BOX_SIZE);
+	mlx->map_img = mlx_new_image(mlx, 270, 210);
 
 	mlx->game_addr = (int *)mlx_get_data_addr(mlx->game_img, &mlx->bits_per_pixel, &mlx->line_length, &mlx->endian);
 	mlx->map_addr = (int *)mlx_get_data_addr(mlx->map_img, &mlx->bits_per_pixel, &mlx->line_length, &mlx->endian);

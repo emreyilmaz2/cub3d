@@ -6,7 +6,7 @@
 /*   By: emyilmaz <emyilmaz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/21 15:30:29 by emyilmaz          #+#    #+#             */
-/*   Updated: 2023/03/24 13:06:14 by emyilmaz         ###   ########.fr       */
+/*   Updated: 2023/04/01 13:57:04 by emyilmaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,9 @@
 
 char	*get_next_line(int fd);
 char	*ft_read_to_left_str(int fd, char *left_str);
-char	*ft_strchr(const char *s, int c);
-char    *ft_strjoin(char const *s1, char const *s2);
+char	*ft_strchr(char *s, int c);
+char	*ft_strjoin(char *left_str, char *buff);
+size_t	ft_strlen(const char *str);
 char	*ft_get_line(char *left_str);
 char	*ft_new_left_str(char *left_str);
 

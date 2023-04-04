@@ -4,5 +4,6 @@
 		"cstring": "c",
 		"locale": "c",
 		"__locale": "c"
-	}
+	},
+	"C_Cpp.errorSquiggles": "enabled"
 }

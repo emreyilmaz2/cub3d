@@ -6,7 +6,7 @@
 /*   By: emyilmaz <emyilmaz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 16:01:40 by emyilmaz          #+#    #+#             */
-/*   Updated: 2022/04/07 15:49:30 by emyilmaz         ###   ########.fr       */
+/*   Updated: 2023/04/01 13:56:20 by emyilmaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,6 @@ int main()
     char *str;
     str = "seko";
 
-    printf("girilen metnin uzunlugu: %lu", strlen(str));  
+    printf("girilen metnin uzunlugu: %lu", strlen(str));
 }
 */

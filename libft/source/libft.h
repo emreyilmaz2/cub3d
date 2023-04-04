@@ -6,7 +6,7 @@
 /*   By: emyilmaz <emyilmaz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 15:05:39 by emyilmaz          #+#    #+#             */
-/*   Updated: 2022/04/07 15:26:21 by emyilmaz         ###   ########.fr       */
+/*   Updated: 2023/04/01 13:55:47 by emyilmaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,11 +63,9 @@ void			ft_putstr_fd(char *s, int fd);
 
 char			**ft_split(char const *s, char c);
 
-char			*ft_strchr(const char *s, int c);
+char			*ft_strchr(char *s, int c);
 
 char			*ft_strdup(const char *s1);
-
-char			*ft_strjoin(char const *s1, char const *s2);
 
 size_t			ft_strlcat(char *dest, const char *src, size_t size);
 
@@ -79,7 +77,7 @@ char			*ft_strmapi(char const *s, char (*f)(unsigned int, char));
 
 int				ft_strncmp(const char *s1, const char *s2, size_t n);
 
-char			*ft_strnstr(const char *haystack, const char *needle,	
+char			*ft_strnstr(const char *haystack, const char *needle,
 					size_t len);
 
 char			*ft_strrchr(const char *s, int c);

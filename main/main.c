@@ -1,49 +1,187 @@
 #include "../header/cub3d.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
 
-
-int	key_hook(int keycode, t_game *game)
+int	key_hook1(int keycode, t_game *game)
 {
-	if (keycode == 53)
-	{
-		mlx_destroy_window(game->window, game->window);
-		exit(0);
-	}
+	exit(0);
 	return (0);
+}
+
+int	key_press(int keycode, t_game *game)
+{
+	if(keycode == KEY_D)
+		game->key_d = true;
+	if(keycode == KEY_A)
+		game->key_a = true;
+	if(keycode == KEY_S)
+		game->key_s = true;
+	if(keycode == KEY_W)
+		game->key_w = true;
+	if(keycode == KEY_LEFT)
+		game->key_l = true;
+	if(keycode == KEY_RIGHT)
+		game->key_r = true;
+	if(keycode == KEY_ESC)
+		exit(0);
+	return(0);
+}
+
+int	key_release(int keycode, t_game *game)
+{
+	if(keycode == KEY_D)
+		game->key_d = false;
+	if(keycode == KEY_A)
+		game->key_a = false;
+	if(keycode == KEY_S)
+		game->key_s = false;
+	if(keycode == KEY_W)
+		game->key_w = false;
+	if(keycode == KEY_LEFT)
+		game->key_l = false;
+	if(keycode == KEY_RIGHT)
+		game->key_r = false;
+	return(0);
+}
+
+void	my_mlx_pixel_put(t_game *mlx, int y, int x, int color)
+{
+	int i;
+	int j;
+
+	j = 0;
+	while(j < mlx->img_pixel)
+	{
+		i = 0;
+		while(i < mlx->img_pixel)
+		{
+			mlx->map_addr[(mlx->img_pixel * y + i) * ft_max_x(mlx->map)
+				* mlx->img_pixel + (mlx->img_pixel * x) + j] = color;
+			i++;
+		}
+		j++;
+	}
+}
+
+void	put_pixel(t_game *mlx)
+{
+	int y;
+	int x;
+
+	y = 0;
+	while(mlx->map[y])
+	{
+		x = 0;
+		while(mlx->map[y][x])
+		{
+			if(mlx->map[y][x] == '1')
+				my_mlx_pixel_put(mlx, y, x, 0x008080);
+			else if(mlx->map[y][x] == '0')
+				my_mlx_pixel_put(mlx, y, x, 0xFFFFFF);
+			x++;
+		}
+		y++;
+	}
+	mlx->character = mlx_new_image(mlx, mlx->img_pixel/2, mlx->img_pixel/2);
+	mlx->character_addr = (int *)mlx_get_data_addr(mlx->character, &mlx->bits_per_pixel, &mlx->line_length, &mlx->endian);
+	int i = 0;
+	while (i < (mlx->img_pixel/2) * (mlx->img_pixel/2))
+		mlx->character_addr[i++] = 0xff0000;
+}
+
+void	put_transparent(t_game *img)
+{
+	int (i) = -1;
+	img->map_height = two_dim_len(img->map);
+	img->map_length = ft_max_x(img->map);
+	while (++i < img->map_length * img->img_pixel
+		* img->map_height* img->img_pixel)
+	{
+		img->map_addr[i] = 0xFF000000;
+	}
 }
 
 
 void	start_game(char *str, t_game *mlx)
 {
+	int (i) = -1;
 	void *img;
 	int *img_addr;
 	char **map;
-	int i;
+	mlx->img_pixel = 17;
 
-	i = 0;
 	mlx->map = mapcontrol(str, mlx);
 	mlx->mlx = mlx_init();
-	mlx->window = mlx_new_window(mlx->mlx, 800, 800, "cub3d");
-	mlx->game_img = mlx_new_image(mlx, 800, 800);
-	mlx->map_img = mlx_new_image(mlx, 270, 210);
-
+	mlx->window = mlx_new_window(mlx->mlx, 1366, 768, "cub3d");
+	mlx->game_img = mlx_new_image(mlx, 1366, 768);
+	mlx->map_img = mlx_new_image(mlx, ft_max_x(mlx->map) * mlx->img_pixel, two_dim_len(mlx->map) * mlx->img_pixel); // 34*16 ve 14*16
+	mlx->ray_img = mlx_new_image(mlx, ft_max_x(mlx->map) * mlx->img_pixel, two_dim_len(mlx->map) * mlx->img_pixel); // 34*16 ve 14*16
 	mlx->game_addr = (int *)mlx_get_data_addr(mlx->game_img, &mlx->bits_per_pixel, &mlx->line_length, &mlx->endian);
 	mlx->map_addr = (int *)mlx_get_data_addr(mlx->map_img, &mlx->bits_per_pixel, &mlx->line_length, &mlx->endian);
+	mlx->ray_addr = (int *)mlx_get_data_addr(mlx->ray_img, &mlx->bits_per_pixel, &mlx->line_length, &mlx->endian);
 
-	i = -1;
-	int k = -1;
-
-	while (k < 270 * 210)
-		mlx->map_addr[++k] = 0x008000;
-	while (++i < 800*400)
-		mlx->game_addr[i] = 0x007fff;
-	while (++i < 800*800)
+	put_transparent(mlx);
+	put_pixel(mlx);
+	while (++i < 1366*384)
+		mlx->game_addr[i] = 0x977141;
+	while (++i < 1366*768)
 		mlx->game_addr[i] = 0x808080;
 	mlx_put_image_to_window(mlx, mlx->window, mlx->game_img, 0, 0);
 	mlx_put_image_to_window(mlx, mlx->window, mlx->map_img, 0, 0);
 
+}
+
+void	cub3_inits(t_game *game)
+{
+	game->key_a = false;
+	game->key_s = false;
+	game->key_d = false;
+	game->key_w = false;
+	game->key_r = false;
+	game->key_l = false;
+}
+
+void	raycasting(double x, double y, t_game *game)
+{
+	int (i) = -1;
+	int (yy) = (int)y / game->img_pixel;
+	int (xx) = (int)x / game->img_pixel;
+	game->map_height = two_dim_len(game->map);
+	game->map_length = ft_max_x(game->map);
+	while (++i < game->map_length * game->img_pixel
+		* game->map_height * game->img_pixel)
+	{
+		game->ray_addr[i] = 0xFF000000;
+	}
+	i = -1;
+	int temp = (yy * (ft_max_x(game->map) * game->img_pixel) * game->img_pixel) + xx * (game->img_pixel) + game->img_pixel/4;
+	game->ray_addr[temp] = 0xff0000;
+	while(++i < 90)
+	{
+		temp = temp - 340;
+		game->ray_addr[temp] = 0xff0000;
+	}
+}
+
+int	game_loop(t_game *game)
+{
+	double (x) = game->map_player_x + (double)(game->img_pixel / 2);
+	double (y) = game->map_player_y + (double)(game->img_pixel / 2);
+
+	if (game->key_r)
+		game->angle -= 5;
+	if (game->key_l)
+		game->angle += 5;
+
+	while (game->angle < 0)
+		game->angle += 360;
+	while (game->angle >= 360)
+		game->angle -= 360;
+	keys_action(x, y, game);
+	raycasting(x, y, game);
+	mlx_put_image_to_window(game, game->window, game->game_img, 0, 0);
+	mlx_put_image_to_window(game, game->window, game->map_img, 0, 0);
+	mlx_put_image_to_window(game, game->window, game->character, game->map_player_x ,game->map_player_y);
+	mlx_put_image_to_window(game, game->window, game->ray_img, 0, 0);
+	return (0);
 }
 
 int main(int ac, char **av)
@@ -58,7 +196,11 @@ int main(int ac, char **av)
 		printf("yanlış argüman");
 		exit(1);
 	}
-	mlx_key_hook(game.window, key_hook, &game);
+	cub3_inits(&game);
+	mlx_hook(game.window, 17, (0L), key_hook1, &game);//close
+	mlx_hook(game.window, 2, (1L), key_press, &game);
+	mlx_hook(game.window, 3, (1L), key_release, &game);
+	mlx_loop_hook(game.mlx, game_loop, &game);
 	mlx_loop(game.mlx);
 	return 0;
 }

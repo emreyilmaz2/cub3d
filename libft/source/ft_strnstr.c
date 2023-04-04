@@ -40,18 +40,15 @@ char	*ft_strnstr(const char *haystack, const char *needle, size_t len)
 int	ft_strstr(const char *s1, const char *s2)
 {
     int i;
-	printf("test\n\n\n\n\n\n");
     i = 0;
     if (!s1 || !s2)
         return (0);
-	printf("bu butun string %s\nbu da aranan -> %s\n", s1, s2);
     while (s1[i] && s2[i])
     {
         if (s1[i] != s2[i])
             return (0);
         i++;
     }
-	printf("%c\n%c", s1[i], s2[i]);
     if (s1[i] == s2[i])
         return (1);
     return (0);

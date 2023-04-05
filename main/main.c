@@ -160,8 +160,8 @@ void draw_3d(t_game *game, int ray_count, int distance)
 	{
 		if (img_loc - (i * 1366) > 0 && img_loc + (i * 1366) < 1366 * 768)
 		{
-			game->game_addr[img_loc - (i * 1366)] = 0x000001 * distance;
-			game->game_addr[img_loc + (i * 1366)] = 0x000001 * distance;
+			game->game_addr[img_loc - (i * 1366)] = 0x007FFF * distance;
+			game->game_addr[img_loc + (i * 1366)] = 0x007FFF * distance;
 		}
 		i++;
 	}
@@ -230,8 +230,11 @@ int	game_loop(t_game *game)
 		game->angle += 360;
 	while (game->angle >= 360)
 		game->angle -= 360;
+	printf("tes\n");
 	keys_action(x, y, game);
+	printf("res\n");
 	raycasting(x, y, game);
+	printf("kes\n");
 	// mlx_clear_window(game->mlx, game->window);
 	mlx_put_image_to_window(game, game->window, game->game_img, 0, 0);
 	if(game->key_tab)

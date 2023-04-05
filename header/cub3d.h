@@ -27,7 +27,7 @@
 # define KEY_SHIFT				257
 # define KEY_E					14
 # define KEY_T					17
-
+# define FOV					66
 typedef struct s_game
 {
 	void	*mlx;
@@ -73,10 +73,10 @@ int main(int ac, char **av);
 void	start_game(char *str, t_game *mlx);
 void	check_cub_file(t_game	*mlx);
 int	ft_strcmp(const char *s1, const char *s2);
-void	raycasting(double x, double y, t_game *game);
+void	raycasting(int x, int y, t_game *game);
 
 // keys action
-void	keys_action_w(int x, int y, t_game *game);
+void	keys_action_w(double x, double y, t_game *game);
 void	keys_action_a(int x, int y, t_game *game);
 void	keys_action_s(int x, int y, t_game *game);
 void	keys_action_d(int x, int y, t_game *game);

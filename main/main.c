@@ -8,18 +8,15 @@ int	key_hook1(int keycode, t_game *game)
 
 int	key_press(int keycode, t_game *game)
 {
-	if (keycode == KEY_TAB)
+	if (keycode == KEY_TAB && game->check_tab == 1)
 	{
-		if(game->check_tab == 1)
-		{
-			game->key_tab = true;
-			game->check_tab = 0;
-		}
-		else
-		{
-			game->key_tab = false;
-			game->check_tab = 1;
-		}
+		game->key_tab = true;
+		game->check_tab = 0;
+	}
+	else if(keycode == KEY_TAB && game->check_tab == 0)
+	{
+		game->key_tab = false;
+		game->check_tab = 1;
 	}
 	if (keycode == KEY_D)
 		game->key_d = true;
@@ -163,8 +160,8 @@ void draw_3d(t_game *game, int ray_count, int distance)
 	{
 		if (img_loc - (i * 1366) > 0 && img_loc + (i * 1366) < 1366 * 768)
 		{
-			game->game_addr[img_loc - (i * 1366)] = 0x000101 * distance;
-			game->game_addr[img_loc + (i * 1366)] = 0x000101 * distance;
+			game->game_addr[img_loc - (i * 1366)] = 0x000001 * distance;
+			game->game_addr[img_loc + (i * 1366)] = 0x000001 * distance;
 		}
 		i++;
 	}

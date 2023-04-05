@@ -2,33 +2,49 @@
 
 void	keys_action_w(double x, double y, t_game *game)
 {
-	if (game->map[(int)((y - sin(game->angle * (M_PI / 180))) / (double)game->img_pixel)][(int)(x / (double)game->img_pixel)] != '1')
+	if (game->map[(int)((y - sin(game->angle * (M_PI / 180)))
+			/ (double)game->img_pixel)][(int)
+				(x / (double)game->img_pixel)] != '1')
 		game->map_player_y -= sin(game->angle * (M_PI / 180));
-	if (game->map[(int)(y / (double)game->img_pixel)][(int)((x + cos(game->angle * (M_PI / 180))) / (double)game->img_pixel)] != '1')
+	if (game->map[(int)(y / (double)game->img_pixel)][(int)
+			((x + cos(game->angle * (M_PI / 180)))
+				/ (double)game->img_pixel)] != '1')
 		game->map_player_x += cos(game->angle * (M_PI / 180));
 }
 
 void	keys_action_a(int x, int y, t_game *game)
 {
-	if (game->map[(int)((y - cos(game->angle * (M_PI / 180))) / (double)game->img_pixel)][(int)(x / (double)game->img_pixel)] != '1')
+	if (game->map[(int)((y - cos(game->angle * (M_PI / 180)))
+			/ (double)game->img_pixel)][(int)
+				(x / (double)game->img_pixel)] != '1')
 		game->map_player_y -= cos(game->angle * (M_PI / 180));
-	if (game->map[(int)(y / (double)game->img_pixel)][(int)((x - sin(game->angle * (M_PI / 180))) / (double)game->img_pixel)] != '1')
-		game->map_player_x-= sin(game->angle * (M_PI / 180));
+	if (game->map[(int)(y / (double)game->img_pixel)][(int)
+			((x - sin(game->angle * (M_PI / 180)))
+				/ (double)game->img_pixel)] != '1')
+		game->map_player_x -= sin(game->angle * (M_PI / 180));
 }
 
 void	keys_action_s(int x, int y, t_game *game)
 {
-	if (game->map[(int)((y + sin(game->angle * (M_PI / 180))) / (double)game->img_pixel)][(int)(x / (double)game->img_pixel)] != '1')
+	if (game->map[(int)((y + sin(game->angle * (M_PI / 180)))
+			/ (double)game->img_pixel)]
+				[(int)(x / (double)game->img_pixel)] != '1')
 		game->map_player_y += sin(game->angle * (M_PI / 180));
-	if (game->map[(int)(y / (double)game->img_pixel)][(int)((x - cos(game->angle * (M_PI / 180))) / (double)game->img_pixel)] != '1')
+	if (game->map[(int)(y / (double)game->img_pixel)][(int)
+			((x - cos(game->angle * (M_PI / 180)))
+				/ (double)game->img_pixel)] != '1')
 		game->map_player_x -= cos(game->angle * (M_PI / 180));
 }
 
 void	keys_action_d(int x, int y, t_game *game)
 {
-	if (game->map[(int)((y + cos(game->angle * (M_PI / 180))) / (double)game->img_pixel)][(int)(x / (double)game->img_pixel)] != '1')
+	if (game->map[(int)((y + cos(game->angle * (M_PI / 180)))
+			/ (double)game->img_pixel)][(int)
+				(x / (double)game->img_pixel)] != '1')
 		game->map_player_y += cos(game->angle * (M_PI / 180));
-	if (game->map[(int)(y / (double)game->img_pixel)][(int)((x + sin(game->angle * (M_PI / 180))) / (double)game->img_pixel)] != '1')
+	if (game->map[(int)(y / (double)game->img_pixel)]
+			[(int)((x + sin(game->angle * (M_PI / 180)))
+				/ (double)game->img_pixel)] != '1')
 		game->map_player_x += sin(game->angle * (M_PI / 180));
 }
 

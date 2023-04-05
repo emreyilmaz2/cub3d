@@ -16,6 +16,7 @@
 // dark cream fff39
 
 # define KEY_ESC				53
+# define KEY_TAB				48
 # define KEY_A					0
 # define KEY_S					1
 # define KEY_D					2
@@ -52,6 +53,7 @@ typedef struct s_game
 	int		flag;
 	int		character_x;
 	int		character_y;
+	int		check_tab;
 
 	double		map_player_x;
 	double		map_player_y;
@@ -65,6 +67,7 @@ typedef struct s_game
 	bool	key_w;
 	bool	key_r;
 	bool	key_l;
+	bool	key_tab;
 }	t_game;
 
 char	*get_next_line(int fd);

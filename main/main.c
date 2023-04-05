@@ -8,38 +8,51 @@ int	key_hook1(int keycode, t_game *game)
 
 int	key_press(int keycode, t_game *game)
 {
-	if(keycode == KEY_D)
+	if (keycode == KEY_TAB)
+	{
+		if(game->check_tab == 1)
+		{
+			game->key_tab = true;
+			game->check_tab = 0;
+		}
+		else
+		{
+			game->key_tab = false;
+			game->check_tab = 1;
+		}
+	}
+	if (keycode == KEY_D)
 		game->key_d = true;
-	if(keycode == KEY_A)
+	if (keycode == KEY_A)
 		game->key_a = true;
-	if(keycode == KEY_S)
+	if (keycode == KEY_S)
 		game->key_s = true;
-	if(keycode == KEY_W)
+	if (keycode == KEY_W)
 		game->key_w = true;
-	if(keycode == KEY_LEFT)
+	if (keycode == KEY_LEFT)
 		game->key_l = true;
-	if(keycode == KEY_RIGHT)
+	if (keycode == KEY_RIGHT)
 		game->key_r = true;
-	if(keycode == KEY_ESC)
+	if (keycode == KEY_ESC)
 		exit(0);
-	return(0);
+	return (0);
 }
 
 int	key_release(int keycode, t_game *game)
 {
-	if(keycode == KEY_D)
+	if (keycode == KEY_D)
 		game->key_d = false;
-	if(keycode == KEY_A)
+	if (keycode == KEY_A)
 		game->key_a = false;
-	if(keycode == KEY_S)
+	if (keycode == KEY_S)
 		game->key_s = false;
-	if(keycode == KEY_W)
+	if (keycode == KEY_W)
 		game->key_w = false;
-	if(keycode == KEY_LEFT)
+	if (keycode == KEY_LEFT)
 		game->key_l = false;
-	if(keycode == KEY_RIGHT)
+	if (keycode == KEY_RIGHT)
 		game->key_r = false;
-	return(0);
+	return (0);
 }
 
 void	my_mlx_pixel_put(t_game *mlx, int y, int x, int color)
@@ -117,7 +130,6 @@ void	start_game(char *str, t_game *mlx)
 	mlx->game_addr = (int *)mlx_get_data_addr(mlx->game_img, &mlx->bits_per_pixel, &mlx->line_length, &mlx->endian);
 	mlx->map_addr = (int *)mlx_get_data_addr(mlx->map_img, &mlx->bits_per_pixel, &mlx->line_length, &mlx->endian);
 	mlx->ray_addr = (int *)mlx_get_data_addr(mlx->ray_img, &mlx->bits_per_pixel, &mlx->line_length, &mlx->endian);
-"                                                                                                                                                                                        b"
 	put_transparent(mlx);
 	put_pixel(mlx);
 	while (++i < 1366*384)
@@ -131,26 +143,29 @@ void	start_game(char *str, t_game *mlx)
 
 void	cub3_inits(t_game *game)
 {
+	game->key_tab = false;
 	game->key_a = false;
 	game->key_s = false;
 	game->key_d = false;
 	game->key_w = false;
 	game->key_r = false;
 	game->key_l = false;
+	game->check_tab = 1;
 }
 
 void draw_3d(t_game *game, int ray_count, int distance)
 {//1366 768
 	int img_loc = 1366 * (768 / 2) + 1366;
 	img_loc -= ray_count;
-	int line_len = 768 / distance * 10;
+	int line_len = 768 / distance * 9;
 	int i = 0;
 	while (i < line_len)
 	{
-		if (img_loc - (i * 1366) > 0)
-			game->game_addr[img_loc - (i * 1366)] = 0x000001 * distance;
-		if (img_loc + (i * 1366) < 1366 * 768)
-			game->game_addr[img_loc + (i * 1366)] = 0x000001 * distance;
+		if (img_loc - (i * 1366) > 0 && img_loc + (i * 1366) < 1366 * 768)
+		{
+			game->game_addr[img_loc - (i * 1366)] = 0x000101 * distance;
+			game->game_addr[img_loc + (i * 1366)] = 0x000101 * distance;
+		}
 		i++;
 	}
 }
@@ -222,9 +237,12 @@ int	game_loop(t_game *game)
 	raycasting(x, y, game);
 	// mlx_clear_window(game->mlx, game->window);
 	mlx_put_image_to_window(game, game->window, game->game_img, 0, 0);
-	mlx_put_image_to_window(game, game->window, game->map_img, 0, 0);
-	mlx_put_image_to_window(game, game->window, game->character, game->map_player_x ,game->map_player_y);
-	mlx_put_image_to_window(game, game->window, game->ray_img, 0, 0);
+	if(game->key_tab)
+	{
+		mlx_put_image_to_window(game, game->window, game->map_img, 0, 0);
+		mlx_put_image_to_window(game, game->window, game->character, game->map_player_x ,game->map_player_y);
+		mlx_put_image_to_window(game, game->window, game->ray_img, 0, 0);
+	}
 	return (0);
 }
 

@@ -3,8 +3,8 @@ SO ./textures/path_to_the_south_texture.xpm
 WE ./textures/path_to_the_west_texture.xpm
 EA ./textures/path_to_the_east_texture.xpm
 
-F 220,100,0
-C 225,11,12
+F 220,100,12
+C 225,12,12
 
 1111111111111111111
 1000000000000000001

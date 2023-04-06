@@ -138,8 +138,6 @@ void	start_game(char *str, t_game *mlx)
 		mlx->game_addr[i] = 0x977141;
 	while (++i < 1366 * 768)
 		mlx->game_addr[i] = 0x808080;
-	//mlx_put_image_to_window(mlx, mlx->window, mlx->game_img, 0, 0);
-	//mlx_put_image_to_window(mlx, mlx->window, mlx->map_img, 0, 0);
 }
 
 void	cub3_inits(t_game *game)
@@ -173,10 +171,12 @@ void	draw_3d(t_game *game, int ray_count, int distance)
 
 void	raycasting(int x, int y, t_game *game)
 {
-	int (i) = -1;
+	int	y2;
+	int	x2;
+	int	temp;
 	// int (yy) = (int)y * game->img_pixel * game->map_length;
 	// int (xx) = (int)x / game->img_pixel;
-	int	temp;
+	int (i) = -1;
 	game->map_height = two_dim_len(game->map);
 	game->map_length = ft_max_x(game->map);
 	while (++i < game->map_length * game->img_pixel
@@ -184,11 +184,9 @@ void	raycasting(int x, int y, t_game *game)
 	{
 		game->ray_addr[i] = 0xFF000000;
 	}
-	int len = game->map_length * game->img_pixel;
-	int y2;
-	int x2;
-	int ray_count = 0;
-	double angle = game->angle - (FOV / 2);
+	int (len) = game->map_length * game->img_pixel;
+	int (ray_count) = 0;
+	double (angle) = game->angle - (FOV / 2);
 	i = -1;
 	while (++i < 1366 * 384)
 		game->game_addr[i] = 0x977141;
@@ -199,18 +197,18 @@ void	raycasting(int x, int y, t_game *game)
 		y2 = y;
 		x2 = x;
 		i = 0;
-		while (1)//&& (y / game->img_pixel) - ((340 * i) / game->img_pixel) > 0 && game->map[(y * (game->map_length * game->img_pixel)) - (340 * i) / game->map_length / game->img_pixel][x / game->img_pixel])
+		while (1)
 		{
 			y2 = ((y - (int)(sin(angle * (M_PI / 180)) * i)) / game->img_pixel);
 			x2 = ((x + (int)(cos(angle * (M_PI / 180)) * i)) / game->img_pixel);
+			printf("x2-> %d\ny2 -> %d\n", x2,y2);
 			if (game->map[y2][x2] != '1')
-				game->ray_addr[
-					(y - (int)(sin(angle * (M_PI / 180)) * i)) * len +
-					(x + (int)(cos(angle * (M_PI / 180)) * i))] = 0x010000 * i;
+				game->ray_addr[(y - (int)(sin(angle * (M_PI / 180)) * i)) * len
+					+ (x + (int)(cos(angle * (M_PI / 180)) * i))] = RED * i;
 			else
 			{
 				draw_3d(game, ray_count, i);
-				break;
+				break ;
 			}
 			i++;
 		}
@@ -223,32 +221,31 @@ int	game_loop(t_game *game)
 {
 	int (x) = game->map_player_x + (game->img_pixel / 4);
 	int (y) = game->map_player_y + (game->img_pixel / 4);
-
 	if (game->key_r)
 		game->angle -= 5;
 	if (game->key_l)
 		game->angle += 5;
-
 	while (game->angle < 0)
 		game->angle += 360;
 	while (game->angle >= 360)
 		game->angle -= 360;
 	keys_action(x, y, game);
 	raycasting(x, y, game);
-
 	mlx_put_image_to_window(game, game->window, game->game_img, 0, 0);
-	if(game->key_tab)
+	if (game->key_tab)
 	{
 		mlx_put_image_to_window(game, game->window, game->map_img, 0, 0);
-		mlx_put_image_to_window(game, game->window, game->character, game->map_player_x ,game->map_player_y);
+		mlx_put_image_to_window(game, game->window, game->character,
+			game->map_player_x, game->map_player_y);
 		mlx_put_image_to_window(game, game->window, game->ray_img, 0, 0);
 	}
 	return (0);
 }
 
-int main(int ac, char **av)
+int	main(int ac, char **av)
 {
 	t_game	game;
+
 	if (ac == 2)
 	{
 		game.path = ft_strdup(av[1]);
@@ -260,11 +257,10 @@ int main(int ac, char **av)
 		exit(1);
 	}
 	cub3_inits(&game);
-	mlx_hook(game.window, 17, (0L), key_hook1, &game);//close
+	mlx_hook(game.window, 17, (0L), key_hook1, &game);
 	mlx_hook(game.window, 2, (1L), key_press, &game);
 	mlx_hook(game.window, 3, (1L), key_release, &game);
 	mlx_loop_hook(game.mlx, game_loop, &game);
 	mlx_loop(game.mlx);
-	free(game.path);
-	return 0;
+	return (0);
 }

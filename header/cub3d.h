@@ -15,6 +15,7 @@
 // cream FFFDD0
 // dark cream fff39
 
+# define RED					0x010000
 # define KEY_ESC				53
 # define KEY_TAB				48
 # define KEY_A					0

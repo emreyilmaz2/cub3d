@@ -61,6 +61,7 @@ typedef struct s_game
 	char	**directions;
 	char	**floor_ceil;
 	char	**map;
+	char	*path;
 	bool	key_d;
 	bool	key_a;
 	bool	key_s;
@@ -93,4 +94,5 @@ int		two_dim_len(char **str);
 void	two_dim_free(char **str);
 int		find_height(int fd);
 int		ft_max_x(char **map);
+int		ft_max_y(char *path);
 #endif

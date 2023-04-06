@@ -118,34 +118,22 @@ void	start_game(char *str, t_game *mlx)
 
 	mlx->img_pixel = 17;
 	int (i) = -1;
-	printf("000\n");
 	mlx->map = mapcontrol(str, mlx);
-	printf("111\n");
 	mlx->mlx = mlx_init();
-	printf("222\n");
 	mlx->window = mlx_new_window(mlx->mlx, 1366, 768, "cub3d");
-	printf("333\n");
 	mlx->game_img = mlx_new_image(mlx, 1366, 768);
-	printf("444\n");
 	mlx->map_img = mlx_new_image(mlx, ft_max_x(mlx->map)
 			* mlx->img_pixel, two_dim_len(mlx->map) * mlx->img_pixel);
-	printf("555\n");
 	mlx->ray_img = mlx_new_image(mlx, ft_max_x(mlx->map)
 			* mlx->img_pixel, two_dim_len(mlx->map) * mlx->img_pixel);
-	printf("666\n");
 	mlx->game_addr = (int *)mlx_get_data_addr(mlx->game_img,
 			&mlx->bits_per_pixel, &mlx->line_length, &mlx->endian);
-	printf("777\n");
 	mlx->map_addr = (int *)mlx_get_data_addr(mlx->map_img,
 			&mlx->bits_per_pixel, &mlx->line_length, &mlx->endian);
-	printf("888\n");
 	mlx->ray_addr = (int *)mlx_get_data_addr(mlx->ray_img,
 			&mlx->bits_per_pixel, &mlx->line_length, &mlx->endian);
-	printf("999\n");
 	put_transparent(mlx);
-	printf("1010\n");
 	put_pixel(mlx);
-	printf("11111\n");
 	while (++i < 1366 * 384)
 		mlx->game_addr[i] = 0x977141;
 	while (++i < 1366 * 768)
@@ -211,7 +199,7 @@ void	raycasting(int x, int y, t_game *game)
 		y2 = y;
 		x2 = x;
 		i = 0;
-		w  hile (1)//&& (y / game->img_pixel) - ((340 * i) / game->img_pixel) > 0 && game->map[(y * (game->map_length * game->img_pixel)) - (340 * i) / game->map_length / game->img_pixel][x / game->img_pixel])
+		while (1)//&& (y / game->img_pixel) - ((340 * i) / game->img_pixel) > 0 && game->map[(y * (game->map_length * game->img_pixel)) - (340 * i) / game->map_length / game->img_pixel][x / game->img_pixel])
 		{
 			y2 = ((y - (int)(sin(angle * (M_PI / 180)) * i)) / game->img_pixel);
 			x2 = ((x + (int)(cos(angle * (M_PI / 180)) * i)) / game->img_pixel);
@@ -263,6 +251,7 @@ int main(int ac, char **av)
 	t_game	game;
 	if (ac == 2)
 	{
+		game.path = ft_strdup(av[1]);
 		start_game(av[1], &game);
 	}
 	else
@@ -276,5 +265,6 @@ int main(int ac, char **av)
 	mlx_hook(game.window, 3, (1L), key_release, &game);
 	mlx_loop_hook(game.mlx, game_loop, &game);
 	mlx_loop(game.mlx);
+	free(game.path);
 	return 0;
 }

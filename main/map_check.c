@@ -32,21 +32,28 @@ int	one_finder(char *first_line)
 	return(1);
 }
 
-int	one_finder(char *path)
+int	ft_max_y(char *path)
 {
-	char *str;
-	char *res;
-	int	len;
+	char (*str);
+	int (y) = 0;
 	int	fd;
-
-	len = -1;
+	int	flag = 0;
 	fd = open(path, O_RDONLY);
 	str = get_next_line(fd);
 	while(str)
 	{
+		if(one_finder(str))
+		{
+			printf("%s", str);
+			flag = 1;
+		}
+		if(flag)
+			y++;
 		free(str);
 		str = get_next_line(fd);
 	}
+	printf("y->>> %d\n", y);
+	return(y);
 }
 
 int is_empty(char *line)
@@ -275,7 +282,8 @@ char	**mapcontrol(char *av, t_game *mlx)
     mlx->map_height = find_height(roro[0]);
     mlx->directions = malloc(sizeof(char *) * 5);
     mlx->floor_ceil = malloc(sizeof(char *) * 3);
-    mlx->map = malloc(sizeof(char *) * two_dim_len(mlx->map) + 1);
+	ft_max_y(mlx->path);
+    mlx->map = malloc(sizeof(char *) * 1023);
     while (++roro[1] < mlx->map_height)
 	{
 		line = get_next_line(roro[0]);

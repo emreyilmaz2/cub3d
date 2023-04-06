@@ -38,3 +38,30 @@ int	two_dim_len(char **str)
 		i++;
 	return (i);
 }
+
+/*char *hex_converter(char ***ptr)
+{
+
+	return (ptr[1][1]);
+}*/
+
+
+int atoi_simple(char str[])
+{
+	int i, num = 0, neg = 0;
+	if (str[0] == '-') {
+		neg = 1;
+		i = 1;
+	}
+	else {
+		i = 0;
+	}
+	while (str[i] != '\0') {
+		num = num * 10 + (str[i] - '0');
+		i++;
+	}
+	if (neg == 1) {
+		num = -num;
+	}
+	return num;
+}

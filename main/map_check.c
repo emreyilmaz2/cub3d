@@ -32,6 +32,23 @@ int	one_finder(char *first_line)
 	return(1);
 }
 
+int	one_finder(char *path)
+{
+	char *str;
+	char *res;
+	int	len;
+	int	fd;
+
+	len = -1;
+	fd = open(path, O_RDONLY);
+	str = get_next_line(fd);
+	while(str)
+	{
+		free(str);
+		str = get_next_line(fd);
+	}
+}
+
 int is_empty(char *line)
 {
 	int	len;
@@ -89,6 +106,7 @@ void	is_all_numeric(char **ptr)
 void	ft_check_colors(char **color) // burda free yapmamiz gerek
 {
 	int (i) = 0;
+	int (j) = 0;
 	char ***ptr;
 	ptr[0] = ft_split(color[0], ' ');
 	ptr[1] = ft_split(ptr[0][1], ',');
@@ -98,6 +116,7 @@ void	ft_check_colors(char **color) // burda free yapmamiz gerek
 		exit(printf("check hexa codes\n"));
 	if((two_dim_len(ptr[1]) > 3) || (two_dim_len(ptr[3]) > 3))
 		exit(printf("more than requested hexa codes\n"));
+
 	is_all_numeric(ptr[1]);
 	is_all_numeric(ptr[3]);
 }
@@ -197,7 +216,6 @@ void	ft_check_maps1(char **str)
 void	ft_check_player(char **map, int i, int j, t_game *mlx)
 {
 	int counter = 0;
-	printf("test3\n");
 	while(map[j])
 	{
 		i = 0;
@@ -242,22 +260,22 @@ void	check_cub_file(t_game	*mlx)
 	// ft_check_borders(mlx->map); // sınırlarda açıklık var mı kontrol
 	ft_check_player(mlx->map, 0, 0, mlx);
 	map_max_x = ft_max_x(mlx->map);
-	// ft_check_maps(mlx->map, map_max_x);///map kontrolu
-	// ft_check_maps1(mlx->map);
+	ft_check_maps(mlx->map, map_max_x);///map kontrolu
+	ft_check_maps1(mlx->map);
 }
 
 char	**mapcontrol(char *av, t_game *mlx)
 {
 	int roro[5] = {-1, -1, -1, -1, -1};
-	char *line;
-    char (**map);
+	char	*line;
+    char	**map;
     roro[0] = open(av, O_RDONLY);
     if (roro[0] < 0)
         exit(0);
     mlx->map_height = find_height(roro[0]);
-    mlx->directions = malloc(sizeof(char *) * 4);
-    mlx->floor_ceil = malloc(sizeof(char *) * 2);
-    mlx->map = malloc(sizeof(char *) * 1024);
+    mlx->directions = malloc(sizeof(char *) * 5);
+    mlx->floor_ceil = malloc(sizeof(char *) * 3);
+    mlx->map = malloc(sizeof(char *) * two_dim_len(mlx->map) + 1);
     while (++roro[1] < mlx->map_height)
 	{
 		line = get_next_line(roro[0]);

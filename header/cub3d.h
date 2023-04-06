@@ -71,8 +71,10 @@ typedef struct s_game
 }	t_game;
 
 char	*get_next_line(int fd);
+char *hex_converter(char ***ptr);
 char **mapcontrol(char *av, t_game *mlx);
 int main(int ac, char **av);
+int atoi_simple(char str[]);
 void	start_game(char *str, t_game *mlx);
 void	check_cub_file(t_game	*mlx);
 int	ft_strcmp(const char *s1, const char *s2);

@@ -2,7 +2,7 @@
 
 int	ft_strcmp(const char *s1, const char *s2)
 {
-    int (index) = 0;
+    int index = 0;
 	while (s1[index] && s2[index])
 	{
 		if (s1[index] != s2[index])
@@ -17,9 +17,9 @@ void	two_dim_free(char **str)
 	int i;
 
 	i = 0;
-	if (!str)
+	if(!str)
 		return ;
-	while (str[i])
+	while(str[i])
 	{
 		free(str[i]);
 		i++;
@@ -32,9 +32,9 @@ int	two_dim_len(char **str)
 	int i;
 
 	i = 0;
-	if (!str)
+	if(!str)
 		return (0);
-	while (str[i])
+	while(str[i])
 		i++;
 	return (i);
 }
@@ -48,9 +48,7 @@ int	two_dim_len(char **str)
 
 int atoi_simple(char str[])
 {
-	int i;
-	int (num) = 0;
-	int (neg) = 0;
+	int i, num = 0, neg = 0;
 	if (str[0] == '-') {
 		neg = 1;
 		i = 1;

@@ -10,6 +10,8 @@ void	keys_action_w(double x, double y, t_game *game)
 			((x + cos(game->angle * (M_PI / 180)))
 				/ (double)game->img_pixel)] != '1')
 		game->map_player_x += cos(game->angle * (M_PI / 180));
+	game->character_x = game->map_player_x / game->img_pixel;
+	game->character_y = game->map_player_y / game->img_pixel;
 }
 
 void	keys_action_a(int x, int y, t_game *game)
@@ -22,6 +24,8 @@ void	keys_action_a(int x, int y, t_game *game)
 			((x - sin(game->angle * (M_PI / 180)))
 				/ (double)game->img_pixel)] != '1')
 		game->map_player_x -= sin(game->angle * (M_PI / 180));
+		game->character_x = game->map_player_x / game->img_pixel;
+		game->character_y = game->map_player_y / game->img_pixel;
 }
 
 void	keys_action_s(int x, int y, t_game *game)
@@ -34,6 +38,8 @@ void	keys_action_s(int x, int y, t_game *game)
 			((x - cos(game->angle * (M_PI / 180)))
 				/ (double)game->img_pixel)] != '1')
 		game->map_player_x -= cos(game->angle * (M_PI / 180));
+		game->character_x = game->map_player_x / game->img_pixel;
+		game->character_y = game->map_player_y / game->img_pixel;
 }
 
 void	keys_action_d(int x, int y, t_game *game)
@@ -46,6 +52,8 @@ void	keys_action_d(int x, int y, t_game *game)
 			[(int)((x + sin(game->angle * (M_PI / 180)))
 				/ (double)game->img_pixel)] != '1')
 		game->map_player_x += sin(game->angle * (M_PI / 180));
+		game->character_x = game->map_player_x / game->img_pixel;
+		game->character_y = game->map_player_y / game->img_pixel;
 }
 
 void	keys_action(int x, int y, t_game *game)

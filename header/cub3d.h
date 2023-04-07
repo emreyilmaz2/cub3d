@@ -15,7 +15,6 @@
 // cream FFFDD0
 // dark cream fff39
 
-# define RED					0x010000
 # define KEY_ESC				53
 # define KEY_TAB				48
 # define KEY_A					0
@@ -52,8 +51,8 @@ typedef struct s_game
 	int		*map_addr;
 	int		img_pixel;
 	int		flag;
-	int		character_x;
-	int		character_y;
+	double		character_x;
+	double		character_y;
 	int		check_tab;
 
 	double		map_player_x;
@@ -70,6 +69,27 @@ typedef struct s_game
 	bool	key_r;
 	bool	key_l;
 	bool	key_tab;
+	bool	hit_h;
+	bool	hit_v;
+	double	dirx;
+	double	diry;
+	double	hdy;
+	double	hdx;
+	double	vdy;
+	double	vdx;
+	double	new_y;
+	double	new_x;
+	double	newtwo_y;
+	double	newtwo_x;
+	double	ray_x;
+	double	ray_x_v;
+	double	ray_x_h;
+	double	ray_y;
+	double	ray_y_v;
+	double	ray_y_h;
+
+	double	distance_v;
+	double	distance_h;
 }	t_game;
 
 char	*get_next_line(int fd);

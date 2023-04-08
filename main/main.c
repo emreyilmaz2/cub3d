@@ -169,7 +169,7 @@ void	draw_3d(t_game *game, int ray_count, double distance)
 		line_len = 768 * 5;
 	// printf("->>%f\n", line_len);
 	int (i) = 0;
-	while (i < line_len && img_loc - (i * 1366) > 0 && img_loc + (i * 1366) < 1366 * 768)
+	while (i < line_len/100000 && img_loc - (i * 1366) > 0 && img_loc + (i * 1366) < 1366 * 768)
 	{
 		if (img_loc - (i * 1366) > 0)
 			game->game_addr[(int)img_loc - (i * 1366)] = 0x001111;
@@ -322,7 +322,7 @@ void	raycasting(int x, int y, t_game *game)
 			if (game->map[y2][x2] != '1')
 				game->ray_addr[
 					(y - (int)(sin(angle * (M_PI / 180)) * i)) * len +
-					(x + (int)(cos(angle * (M_PI / 180)) * i))] = 0x010000 * i;
+					(x + (int)(cos(angle * (M_PI / 180)) * i))] = 0x010000;
 			else
 			{
 				// draw_3d(game, ray_count, i);

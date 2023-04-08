@@ -3,17 +3,19 @@
 #include "stdlib.h"
 #include "unistd.h"
 
-int	find_height(int fd)
+int	find_height(char *path)
 {
-	int	len = 0;
-	char *line;
+	int (fd);
+	int	(len) = 0;
+	char (*line);
+	fd = open(path, O_RDONLY);
 	line = get_next_line(fd);
 	while(line)
 	{
 		len++;
 		line = get_next_line(fd);
 	}
-	off_t new_pos = lseek(fd, 0, SEEK_SET);
+	close(fd);
 	return(len);
 }
 
@@ -279,12 +281,14 @@ char	**mapcontrol(char *av, t_game *mlx)
     roro[0] = open(av, O_RDONLY);
     if (roro[0] < 0)
         exit(0);
-    mlx->map_height = find_height(roro[0]);
+
     mlx->directions = malloc(sizeof(char *) * 5);
     mlx->floor_ceil = malloc(sizeof(char *) * 3);
-	ft_max_y(mlx->path);
-    mlx->map = malloc(sizeof(char *) * 1023);
-    while (++roro[1] < mlx->map_height)
+    mlx->map = malloc(sizeof(char *) * ft_max_y(mlx->path));
+
+
+	int temp = find_height(mlx->path);
+    while (++roro[1] < temp)
 	{
 		line = get_next_line(roro[0]);
 		if(is_empty(line));

@@ -29,8 +29,31 @@
 # define KEY_E					14
 # define KEY_T					17
 # define FOV					66
+# define MAP_WIDTH				1080
+# define MAP_HEIGHT				720
+
+
+typedef struct s_mlximg
+{
+	void	*ptr;
+	int		*addr;
+	int		bpp;
+	int		line_size;
+	int		endian;
+}	t_mlximg;
+
+typedef struct s_xpm
+{
+	t_mlximg	img;
+	int			width;
+	int			height;
+}	t_xpm;
+
+
 typedef struct s_game
 {
+
+	t_xpm	xpm[4];
 	void	*mlx;
 	void	*window;
 	int		map_length;
@@ -90,6 +113,7 @@ typedef struct s_game
 
 	double	distance_v;
 	double	distance_h;
+	double	new_angle;
 }	t_game;
 
 char	*get_next_line(int fd);
@@ -113,7 +137,7 @@ void	keys_action(int x, int y, t_game *game);
 // utils
 int		two_dim_len(char **str);
 void	two_dim_free(char **str);
-int		find_height(int fd);
+int		find_height(char *path);
 int		ft_max_x(char **map);
 int		ft_max_y(char *path);
 #endif

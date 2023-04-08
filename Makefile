@@ -25,5 +25,5 @@ MINILIBX:
 clean:
 	rm -rf $(NAME)
 
-re: clean $(LIBFT) all
+re: clean all
 er: clean all

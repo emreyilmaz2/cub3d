@@ -121,8 +121,8 @@ void	start_game(char *str, t_game *mlx)
 	int (i) = -1;
 	mlx->map = mapcontrol(str, mlx);
 	mlx->mlx = mlx_init();
-	mlx->window = mlx_new_window(mlx->mlx, 1366, 768, "cub3d");
-	mlx->game_img = mlx_new_image(mlx, 1366, 768);
+	mlx->window = mlx_new_window(mlx->mlx, MAP_WIDTH, MAP_HEIGHT, "cub3d");
+	mlx->game_img = mlx_new_image(mlx, MAP_WIDTH, MAP_HEIGHT);
 	mlx->map_img = mlx_new_image(mlx, ft_max_x(mlx->map)
 			* mlx->img_pixel, two_dim_len(mlx->map) * mlx->img_pixel);
 	mlx->ray_img = mlx_new_image(mlx, ft_max_x(mlx->map)
@@ -135,9 +135,9 @@ void	start_game(char *str, t_game *mlx)
 			&mlx->bits_per_pixel, &mlx->line_length, &mlx->endian);
 	put_transparent(mlx);
 	put_pixel(mlx);
-	while (++i < 1366 * 384)
+	while (++i < MAP_WIDTH * (MAP_HEIGHT / 2))
 		mlx->game_addr[i] = 0x977141;
-	while (++i < 1366 * 768)
+	while (++i < MAP_WIDTH * MAP_HEIGHT)
 		mlx->game_addr[i] = 0x808080;
 	//mlx_put_image_to_window(mlx, mlx->window, mlx->game_img, 0, 0);
 	//mlx_put_image_to_window(mlx, mlx->window, mlx->map_img, 0, 0);
@@ -152,42 +152,46 @@ void	cub3_inits(t_game *game)
 	game->key_w = false;
 	game->key_r = false;
 	game->key_l = false;
+	game->hit_h = false;
+	game->hit_v = false;
 	game->check_tab = 1;
 }
 
 void	draw_3d(t_game *game, int ray_count, double distance)
 {
-	// printf("->>%f\n", distance);
-	distance = distance * (double)game->img_pixel
-		* ((double)768 / (double)1366);
-	int (img_loc) = 1366 * (768 / 2) + 1366;
-	img_loc -= ray_count;
-	double line_len;
-	if (distance != 0.0)
-		line_len = (((double)768 / 2.0) / distance) * (double)game->img_pixel;
-	else
-		line_len = 768 * 5;
-	// printf("->>%f\n", line_len);
 	int (i) = 0;
-	while (i < line_len/100000 && img_loc - (i * 1366) > 0 && img_loc + (i * 1366) < 1366 * 768)
+	distance = distance * (double)game->img_pixel
+		* ((double)MAP_HEIGHT / (double)MAP_WIDTH);
+	double rate = (((double)MAP_WIDTH / 2.0) / distance) * (double)game->img_pixel;
+	if(rate >= 4000)
+		rate = 4000;
+	while (i <= rate && i <= (MAP_HEIGHT / 2.0))
 	{
-		if (img_loc - (i * 1366) > 0)
-			game->game_addr[(int)img_loc - (i * 1366)] = 0x001111;
-		if (img_loc + (i * 1366) < 1366 * 768)
-			game->game_addr[(int)img_loc + (i * 1366)] = 0x00eeee;
+		game->game_addr[((MAP_HEIGHT / 2) * MAP_WIDTH - ray_count) + (MAP_WIDTH * i)] = 0x003600;
+		game->game_addr[((MAP_HEIGHT / 2) * MAP_WIDTH - ray_count) - (MAP_WIDTH * i)] = 0x5c3021;
 		i++;
 	}
+}
+
+int	is_wall_v2(double x, double y, t_game *img)
+{
+	int	tempx;
+	int	tempy;
+
+	tempx = (int)floor(x);
+	tempy = (int)floor(y);
+	return (ft_strchr("0NSEW", img->map[tempy][tempx]) == NULL);
 }
 
 void	ray_horizontal_while(t_game *game, bool *hit, double angle)
 {
 	while (game->character_x + game->hdx * game->dirx >= 0
-		&& game->character_x + game->hdx * game->dirx <= (ft_max_x(game->map) - 1)
+		&& game->character_x + game->hdx * game->dirx <= 50
 		&& game->character_y + game->hdy * game->diry - 0.0001 >= 0.0
-		&& game->character_y + game->hdy * game->diry - 0.0001 <= two_dim_len(game->map))
+		&& game->character_y + game->hdy * game->diry - 0.0001 <= 14)
 	{
 		game->hdy = game->hdy + 0.0001;
-		if (game->map[(int)(game->character_y + game->hdy * game->diry)][(int)(game->character_x + game->hdx * game->dirx)] != '1')
+		if (is_wall_v2(game->character_x + game->hdx * game->dirx, game->character_y + game->hdy * game->diry, game))
 		{
 			*hit = true;
 			game->newtwo_x = game->hdx * game->dirx;
@@ -209,7 +213,7 @@ void	ray_vertical_while(t_game *game, bool *hit, double angle)
 		&& game->character_y + game->vdy * game->diry <= two_dim_len(game->map))
 	{
 		game->vdx = game->vdx + 0.0001;
-		if (game->map[(int)(game->character_y + game->vdy * game->diry)][(int)(game->character_x + game->vdx * game->dirx)] != '1')
+		if (is_wall_v2(game->character_x + game->vdx * game->dirx, game->character_y + game->vdy * game->diry, game))
 		{
 			*hit = true;
 			game->new_x = game->vdx * game->dirx;
@@ -260,11 +264,44 @@ double	vertical(t_game *game, double angle, bool *hit)
 	return (distance);
 }
 
+void draw_line(void *mlx_ptr, void *win_ptr, int x1, int y1, int x2, int y2, int color)
+{
+    int dx = abs(x2 - x1);
+    int dy = abs(y2 - y1);
+    int sx = x1 < x2 ? 1 : -1;
+    int sy = y1 < y2 ? 1 : -1;
+    int err = dx - dy;
+
+    mlx_pixel_put(mlx_ptr, win_ptr, x1, y1, color);
+
+    while (x1 != x2 || y1 != y2)
+    {
+        int e2 = 2 * err;
+
+        if (e2 > -dy)
+        {
+            err -= dy;
+            x1 += sx;
+        }
+
+        if (e2 < dx)
+        {
+            err += dx;
+            y1 += sy;
+        }
+
+        mlx_pixel_put(mlx_ptr, win_ptr, x1, y1, color);
+    }
+}
+
 void	dda(t_game *game, int x, int y, int ray_c, double angle)
 {
 	double	distance;
 	double	original_distance;
+	int x2, y2;
 
+	//printf("DOGRU MU2 %f\n",game->angle); -> derece olarak
+	//printf("%f\n",angle);
 	game->dirx = ((cos(angle * (M_PI / 180)) > 0) * 2) - 1;
 	game->diry = ((sin(angle * (M_PI / 180)) > 0) * -2) + 1;
 
@@ -282,16 +319,17 @@ void	dda(t_game *game, int x, int y, int ray_c, double angle)
 		game->hit_h = true;
 		game->hit_v = false;
 	}
+	x2 = game->character_x + distance * cos(angle * M_PI / 180);
+	y2 = game->character_y + distance * sin(angle * M_PI / 180);
 	original_distance = distance;
-	distance *= fabs(cos(((game->angle * (180.0 / M_PI)) - angle) * (M_PI / 180)));
+	distance *= fabs(cos(((game->angle) - angle) * (M_PI / 180)));
+	draw_line(game->mlx, game->window, game->character_x, game->character_y, x2, y2, 0xFF0000);
 	draw_3d(game, ray_c, distance);
 }
 
 void	raycasting(int x, int y, t_game *game)
 {
 	double (i) = -1;
-	// int (yy) = (int)y * game->img_pixel * game->map_length;
-	// int (xx) = (int)x / game->img_pixel;
 	int	temp;
 	game->map_height = two_dim_len(game->map);
 	game->map_length = ft_max_x(game->map);
@@ -305,33 +343,32 @@ void	raycasting(int x, int y, t_game *game)
 	int x2;
 	int ray_count = 0;
 	double angle = game->angle - (FOV / 2);
+
 	i = -1;
-	while (++i < 1366 * 384)
+	while (++i < MAP_WIDTH * (MAP_HEIGHT / 2))
 		game->game_addr[(int)i] = 0x977141;
-	while (++i < 1366 * 768)
+	while (++i < MAP_WIDTH * MAP_HEIGHT)
 		game->game_addr[(int)i] = 0x808080;
-	while (ray_count < 1366)
+	while (ray_count < MAP_WIDTH)
 	{
 		y2 = y;
 		x2 = x;
 		i = 0;
 		while (1)//&& (y / game->img_pixel) - ((340 * i) / game->img_pixel) > 0 && game->map[(y * (game->map_length * game->img_pixel)) - (340 * i) / game->map_length / game->img_pixel][x / game->img_pixel])
 		{
+			//game->new_angle = game->angle - ()
 			y2 = ((y - (int)(sin(angle * (M_PI / 180)) * i)) / game->img_pixel);
 			x2 = ((x + (int)(cos(angle * (M_PI / 180)) * i)) / game->img_pixel);
-			if (game->map[y2][x2] != '1')
+			if (game->map[y2][x2] == '0')
 				game->ray_addr[
 					(y - (int)(sin(angle * (M_PI / 180)) * i)) * len +
-					(x + (int)(cos(angle * (M_PI / 180)) * i))] = 0x010000;
+					(x + (int)(cos(angle * (M_PI / 180)) * i))] = 0x010000 * i;
 			else
-			{
-				// draw_3d(game, ray_count, i);
 				break;
-			}
-			i += 0.5;
+			i++;
 		}
 		dda(game, x, y, ray_count, angle);
-		angle += (double)FOV / (double)1366;
+		angle += (double)FOV / (double)MAP_WIDTH;
 		ray_count++;
 	}
 }
@@ -345,7 +382,6 @@ int	game_loop(t_game *game)
 		game->angle -= 5;
 	if (game->key_l)
 		game->angle += 5;
-
 	while (game->angle < 0)
 		game->angle += 360;
 	while (game->angle >= 360)
@@ -372,10 +408,7 @@ int main(int ac, char **av)
 		start_game(av[1], &game);
 	}
 	else
-	{
-		printf("yanlış argüman");
-		exit(1);
-	}
+		exit(printf("wrong arg count"));
 	cub3_inits(&game);
 	mlx_hook(game.window, 17, (0L), key_hook1, &game);//close
 	mlx_hook(game.window, 2, (1L), key_press, &game);
